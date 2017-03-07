@@ -142,6 +142,10 @@ containing:
 - `throttle`: a number indicating a millisecond value of throttle which will
   limit the in-view event firing rate to happen every that many milliseconds
 
+- `considerPageVisibility`: A boolean indicating whether or not the page
+  visibility should be considered when marking an element as visible or not
+  (default false).
+
 ### InViewContainer
 
 Use `in-view-container` when you have a scrollable container that contains `in-view`

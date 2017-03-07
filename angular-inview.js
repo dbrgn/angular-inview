@@ -62,7 +62,12 @@ function inViewDirective ($parse) {
       var viewportEventSignal = signalSingle({ type: 'initial' })
 
       // Merged with the window events
-      .merge(signalFromEvent(window, 'checkInView click ready wheel mousewheel DomMouseScroll MozMousePixelScroll resize scroll touchmove mouseup keydown'))
+      .merge(signalFromEvent(window, 'checkInView click ready wheel mousewheel DomMouseScroll MozMousePixelScroll resize scroll touchmove mouseup keydown'));
+
+      // Merged with the page visibility events
+      if (options.considerPageVisibility) {
+        viewportEventSignal = viewportEventSignal.merge(signalFromEvent(document, 'visibilitychange'));
+      }
 
       // Merge with container's events signal
       if (container) {
@@ -94,8 +99,9 @@ function inViewDirective ($parse) {
         viewportRect = offsetRect(viewportRect, options.viewportOffset);
         var elementRect = offsetRect(element[0].getBoundingClientRect(), options.offset);
         var isVisible = !!(element[0].offsetWidth || element[0].offsetHeight || element[0].getClientRects().length);
+        var documentVisible = !options.considerPageVisibility || document.visibilityState === 'visible' || document.hidden === false;
         var info = {
-          inView: isVisible && intersectRect(elementRect, viewportRect),
+          inView: documentVisible && isVisible && intersectRect(elementRect, viewportRect),
           event: event,
           element: element,
           elementRect: elementRect,
