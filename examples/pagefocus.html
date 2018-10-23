@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="pageVisibilityApp">
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="pageFocusApp">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>angular-inview basic example</title>
@@ -43,13 +43,13 @@
 	<ul id="lines">
 		<li ng-repeat="t in testLines"
             in-view="lineInView($index, $inview, $inviewInfo)"
-            in-view-options="{ considerPageVisibility: true }">This is test line #{{$index}}</li>
+            in-view-options="{ considerPageFocus: true }">This is test line #{{$index}}</li>
 	</ul>
 
 	<script src="../node_modules/angular/angular.js"></script>
 	<script src="../angular-inview.js"></script>
 	<script type="text/javascript">
-	angular.module('pageVisibilityApp', ['angular-inview']).controller('basicCtrl', function basicCtrl ($scope, $sce) {
+	angular.module('pageFocusApp', ['angular-inview']).controller('basicCtrl', function basicCtrl ($scope, $sce) {
 		var logId = 0;
 		$scope.testLines = [];
 		for (var i = 20; i >= 0; i--) {
@@ -72,9 +72,14 @@
 			$scope.inviewLogs.unshift({ id: logId++, message: $sce.trustAsHtml('Line <em>#' + index + '</em>: ' + inViewReport) });
 			return false;
 		}
-        document.addEventListener('visibilitychange', () => {
+        document.addEventListener('focus', () => {
             $scope.$apply(() => {
-                $scope.inviewLogs.unshift({ id: logId++, message: $sce.trustAsHtml('Document: ' + document.visibilityState) });
+                $scope.inviewLogs.unshift({ id: logId++, message: $sce.trustAsHtml('Document: focussed') });
+            });
+        });
+        document.addEventListener('blur', () => {
+            $scope.$apply(() => {
+                $scope.inviewLogs.unshift({ id: logId++, message: $sce.trustAsHtml('Document: lost focus') });
             });
         });
 	});

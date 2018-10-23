@@ -146,6 +146,10 @@ containing:
   visibility should be considered when marking an element as visible or not
   (default false).
 
+- `considerDocumentFocus`: A boolean indicating whether or not the document
+  focus should be considered when marking an element as visible or not
+  (default false).
+
 ### InViewContainer
 
 Use `in-view-container` when you have a scrollable container that contains `in-view`
